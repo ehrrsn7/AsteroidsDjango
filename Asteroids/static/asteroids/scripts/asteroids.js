@@ -3,15 +3,9 @@ import Ship from "../gameobject scripts/ship.js"
 import Star from "../gameobject scripts/star.js"
 import { loadShipLives } from "./stateManager.js"
 import Rock from "../gameobject scripts/rock.js"
-import Image from "./misc scripts/image.js"
-import Dimensions from "./misc scripts/dimensions.js"
 import debug from "./misc scripts/debug.js"
 import time from "./misc scripts/time.js"
-import Point from "./misc scripts/point.js"
-import { FIRING_RATE } from "../gameobject scripts/laser.js"
-import stateManager from "./stateManager.js"
 import collisionHandler from "./collisionHandler.js"
-import math from "./misc scripts/math.js"
 const canvas = document.querySelector("canvas")
 
 // state 'enum'
@@ -77,8 +71,8 @@ class Game {
                 this.handleCollisions()
                 this.stars.forEach((star) => star.update())
                 this.rocks.forEach((rock) => rock.update())
+                this.lasers.forEach((laser) => laser.update())
                 for (var i in this.shipLives) this.shipLives[i].update()
-                this.updateLasers()
                 this.ship.update()
 
                 break;
@@ -177,9 +171,21 @@ class Game {
 
     wrap(projectile) {
         var buffer = -projectile.radius
-        if (projectile.p.x < buffer) { projectile.p.x = canvas.width - buffer; return true } else if (projectile.p.x > canvas.width - buffer) { projectile.p.x = buffer; return true }
+        if (projectile.p.x < buffer) {
+            projectile.p.x = canvas.width - buffer
+            return true
+        } else if (projectile.p.x > canvas.width - buffer) {
+            projectile.p.x = buffer
+            return true
+        }
 
-        if (projectile.p.y < buffer) { projectile.p.y = canvas.height - buffer; return true } else if (projectile.p.y > canvas.height - buffer) { projectile.p.y = buffer; return true }
+        if (projectile.p.y < buffer) {
+            projectile.p.y = canvas.height - buffer;
+            return true
+        } else if (projectile.p.y > canvas.height - buffer) {
+            projectile.p.y = buffer;
+            return true
+        }
 
         return false
     }
@@ -192,10 +198,6 @@ class Game {
             this.lasers.push(this.ship.fire())
                 // debug.display(`asteroids.lasers.length{${this.lasers.length}}`, "lasersLength", false)
         }
-    }
-
-    updateLasers() {
-        this.lasers.forEach((laser) => laser.update())
     }
 
     /**

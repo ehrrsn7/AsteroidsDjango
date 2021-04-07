@@ -1,7 +1,5 @@
 // import
 import debug from "./misc scripts/debug.js"
-import Point from "./misc scripts/point.js"
-const canvas = document.querySelector("canvas")
 
 // define
 const FPS = 60
