@@ -5,7 +5,7 @@ import time from "../scripts/misc scripts/time.js"
 import Projectile from "../scripts/misc scripts/projectile.js"
 import Velocity from "../scripts/misc scripts/velocity.js"
 
-const LASER_SPEED = 20 // laser speed in pixels/second
+const LASER_SPEED = 25 // laser speed in pixels/second
 const LASER_LIFE = 1 // laser expiration time in seconds
 
 class Laser extends Projectile {

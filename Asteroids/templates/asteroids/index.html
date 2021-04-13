@@ -14,55 +14,46 @@
 </header>
 
 <body>
-    <a href="/Main-Menu.html">
-        <button>Main Menu</button>
-    </a>
-    <canvas id="game canvas" width="600" height="500px">
-        <button>Hello</button>
-    </canvas>
-    <div id="debug" style="visibility:hidden;">
-        <div id="to-do">
-            <h2 style="text-decoration: underline;">To-Do:</h2>
-            <ul>
-                <li>
-                    Improve Debug div by using Django functionality
-                    - example: Fix fps/dt output
-                </li>
-                <li>
-                    Using Django, dynamically resize the canvas
-                    size to fill the screen
-                </li>
-                <li>
-                    Add buttons/joysticks(?) for mobile element
-                    implementation.
-                </li>
-                <li>
-                    Dark Mode! (see
-                    <a href="https://ehrrsn7.github.io/Landing-Page/index.html" target="_blank">
-                        https://ehrrsn7.github.io/Landing-Page/index.html
-                    </a>
-                    )
-                </li>
-                <li>
-                    cse 310 module requirement:
-                    Add a second page!
-                    Implement a main menu screen page.
-                </li>
-                <li>
-                    stretch challenge for cse 310 module:
-                    add database functionality to this project
-                    (I'll build on this module and implement
-                    firebase functionality instead)
-                </li>
-                <li>
-                    Eventually, upload this entire project to GitHub and
-                    host it using GitHub Pages
-                </li>
-            </ul>
-        </div>
+    {% comment %} navigation buttons {% endcomment %}
+    <a href="/Main-Menu.html"><button>Main Menu</button></a>
+
+    <div id="level-complete">
+        <h2>Level complete!</h2>
     </div>
+
+    {% comment %} game {% endcomment %}
+    <div id="game-div">
+        <p id="score"></p>
+        <canvas id="game canvas" width="600px" height="500px">
+            <button>Hello</button>
+        </canvas>
+    </div>
+
+    {% comment %} scores {% endcomment %}
+    <h1>HIGH SCORES:</h1>    
+    <table>
+        <tr class="table-header">
+            <td class="right-align" >Name</td>
+            <td class="left-align"  >Score</td>
+        </tr>
+
+        {% for key, value in high_scores.items %}
+            {% if forloop.first %}
+                <tr class="high-score">
+                    <td class="right-align" >{{key}}</td>
+                    <td class="left-align"  >{{value}}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="right-align" >{{key}}</td>
+                    <td class="left-align"  >{{value}}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
 </body>
 
+{% comment %} run script {% endcomment %}
 <script src="{% static 'asteroids/scripts/main.js' %}" type="module"></script>
 
 </html>

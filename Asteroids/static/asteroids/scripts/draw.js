@@ -73,6 +73,20 @@ var draw = {
         context.fillRect(0, 0, canvas.width, canvas.height)
     },
 
+    drawText: function(text, xOffset = 0, yOffset = 30) {
+        context.fillStyle = this.color
+        var fontSize = 24
+        context.font = `${fontSize}px calibri`
+        context.fillText(
+            // text
+            text,
+            // x (center align)
+            canvas.width * .5 - fontSize * `${text}`.length * .5 + xOffset,
+            // y
+            yOffset
+        )
+    },
+
     triangle: function(
         p, // point
         sl, // side length

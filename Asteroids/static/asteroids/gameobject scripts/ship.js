@@ -16,7 +16,7 @@ const canvas = document.querySelector("canvas")
 // define
 const ACCELERATION_AMOUNT = 100 // ship acceleration amount in pixels/s/s
 const FRICTION_AMOUNT = 0.1 // brake deceleration amount
-const LASER_DELAY = .1 // cannon delay rate in frames
+const LASER_DELAY = .05 // cannon delay rate in frames
 
 // ship module
 class Ship extends Projectile {

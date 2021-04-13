@@ -50,6 +50,9 @@ class Game {
             this.stars.push(new Star(canvas.width, canvas.height))
         this.asteroidBelt(8)
         Game.state = states.RESUME
+
+        // other
+        this.score = 0
     }
 
     /**********
@@ -63,6 +66,10 @@ class Game {
      *********/
     update() {
         draw.fillBackground()
+
+        // TODO: display the score using html/js instead of canvas.context
+        draw.drawText(this.score)
+        document.getElementById("score").innerHTML = `${this.score}`
 
         // handle states
         debug.display(`${displayState(Game.state)}`, "gameState")
@@ -85,11 +92,18 @@ class Game {
                 break;
         }
 
+        if (this.rocks.length <= 0) this.levelComplete()
+
         // independent of states
         this.handleInput()
         time.tick()
         this.wrapObjects()
         draw.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
+
+    levelComplete() {
+        console.log("game.levelComplete() called")
+        document.getElementById("level-complete").hidden = false
     }
 
     /***************
@@ -113,13 +127,14 @@ class Game {
     handleCollisions() {
         for (var i in this.rocks) {
             // collisions between ship and rocks
-            if (!this.ship.invulnerable)
+            if (!this.ship.invulnerable) {
                 if (collisionHandler.distanceBetweenProjectiles(this.ship, this.rocks[i]) < this.ship.r + this.rocks[i].r) {
                     this.ship.hit()
                     this.rocks[i].hit()
                 }
+            }
 
-                // collisions between lasers and rocks
+            // collisions between lasers and rocks
             for (var j in this.lasers) {
                 if (collisionHandler.distanceBetweenProjectiles(this.rocks[i], this.lasers[j]) < this.rocks[i].r + this.lasers[j].r) {
                     this.rocks[i].hit()
@@ -140,10 +155,18 @@ class Game {
 
         for (var i = 0; i < this.rocks.length; i++) {
             if (!this.rocks[i].alive) {
-                // debug.display(`Splicing old rock: '${this.rocks[i].name}'`)
+
+                // snapshot old rock so we can work with it
                 var oldRock = this.rocks[i]
+
+                // update the score!
+                this.score += oldRock.points
+
+                // split rock into two new ones (not yet added to collection)
                 var newRocks = oldRock.split()
                 console.log(newRocks)
+
+                // remove old rock and splice new ones into its place in 'rocks' collection
                 if (oldRock.id < 3)
                     this.rocks.splice(i, 1, newRocks[0], newRocks[1])
                 else this.rocks.splice(i, 1)
